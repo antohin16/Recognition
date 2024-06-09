@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Модальное окно при запуске</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+    <div id="myModal" class="modal">
+        <!-- Кнопка теперь включает в себя всё содержимое модального окна -->
+        <button id="continueButton" class="modal-content continue-button">
+            <h1>Добро пожаловать в наше приложение!</h1>
+            <p>Это приложение предназначено для распознавания показаний счетчиков. Вы можете загрузить фотографию вашего счетчика, и приложение автоматически определит показания. Это удобный способ отслеживания вашего потребления ресурсов без необходимости вручную вводить данные.</p>
+            <p>Просто загрузите изображение, и мы позаботимся об остальном!</p>
+            <span class="continue-text">Нажмите, чтобы продолжить</span>
+        </button>
+    </div>
+
+    <script src="{% static 'main/main.js' %}"></script>
+</body>
+</html>

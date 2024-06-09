@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Требуется авторизация</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+<nav class="navigation">
+    <a href="/">Главная</a>
+    <a href="{% url 'login' %}">Вход</a>
+    <a href="{% url 'register' %}">Регистрация</a>
+</nav>
+<div class="register-container">
+    <div class="register-box">
+        <h2>Требуется вход в учебную запись</h2>
+         <p class="register-link">Чтобы распознавать счетчики, необходимо <a href="{% url 'register' %}">Зарегистрироваться</a> или <a href="{% url 'login' %}">Авторизоваться</a>.</p>
+    </div>
+</div>
+</body>
+</html>

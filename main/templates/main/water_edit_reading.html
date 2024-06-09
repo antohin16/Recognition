@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование показаний водяных счетчиков</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+    <nav class="navigation">
+        <div class="navigation-links">
+            <a href="/">Главная</a>
+            <a href="{% url 'upload' %}">Распознавание заводских счетчиков</a>
+            <a href="{% url 'water_upload' %}">Распознавание водяных счетчиков</a>
+            <a href="{% url 'readings' %}">Посмотреть сохранённые показания</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu">
+            <a href="/">Главная</a>
+            <a href="{% url 'upload' %}">Распознавание заводских счетчиков</a>
+            <a href="{% url 'water_upload' %}">Распознавание водяных счетчиков</a>
+            <a href="{% url 'readings' %}">Посмотреть сохранённые показания</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Выйти</a>
+            {% else %}
+                <a href="{% url 'login' %}">Войти</a>
+                <a href="{% url 'register' %}">Регистрация</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Редактирование показаний водяных счетчиков</h1>
+        <form id="upload-form">
+            {% csrf_token %}
+            <input type="hidden" id="reading-id" name="reading_id" value="{{ reading.id }}">
+            <input type="file" id="image-input" name="image" accept="image/*">
+            <button type="button" onclick="uploadImage();">Загрузить изображение</button>
+        </form>
+        <div id="image-display">
+            <img src="{{ reading.image_url }}" style="max-width: 500px;">
+        </div>
+        <div id="result">
+            Результат: {{ reading.reading_value }}
+        </div>
+        <form id="save-form">
+            {% csrf_token %}
+            <input type="hidden" id="reading-id" name="reading_id" value="{{ reading.id }}">
+            <input type="text" id="reading-input" name="reading" value="{{ reading.reading_value }}" required>
+            <button type="button" onclick="saveReading();">Сохранить показания</button>
+        </form>
+    </div>
+
+    <!-- Модальное окно -->
+    <div id="success-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Показания успешно сохранены!</p>
+            <button type="button" onclick="closeModal()">OK</button>
+        </div>
+    </div>
+
+    <script>
+        function uploadImage() {
+            var formData = new FormData(document.getElementById('upload-form'));
+            var imageInput = document.getElementById('image-input');
+            var recognizeUrl = '{% url "water_recognize" %}';
+
+            if (imageInput.files.length > 0) {
+                formData.append('image', imageInput.files[0]);
+
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('image-display').innerHTML = '<img src="' + e.target.result + '" style="max-width: 500px;">';
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+
+                fetch(recognizeUrl, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('result').innerHTML = 'Результат: ' + data.final_reading;
+                            document.getElementById('reading-input').value = data.final_reading;
+                            document.getElementById('save-form').style.display = 'block';
+                        } else {
+                            document.getElementById('result').innerHTML = 'Не удалось распознать.';
+                            document.getElementById('save-form').style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка:', error);
+                        document.getElementById('result').textContent = 'Произошла ошибка при отправке изображения.';
+                        document.getElementById('save-form').style.display = 'none';
+                    });
+            } else {
+                document.getElementById('result').textContent = 'Пожалуйста, выберите изображение для загрузки.';
+            }
+        }
+
+        function saveReading() {
+            var saveForm = document.getElementById('save-form');
+            var formData = new FormData(saveForm);
+            var saveUrl = '{% url "save_edited_water_reading" %}';
+
+            fetch(saveUrl, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showModal();
+                    } else {
+                        alert('Ошибка при сохранении показаний: ' + data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    alert('Произошла ошибка при сохранении показаний.');
+                });
+        }
+
+        function showModal() {
+            var modal = document.getElementById('success-modal');
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            var modal = document.getElementById('success-modal');
+            modal.style.display = 'none';
+            resetForm();
+        }
+
+        function resetForm() {
+            document.getElementById('upload-form').reset();
+            document.getElementById('save-form').reset();
+            document.getElementById('image-display').innerHTML = '';
+            document.getElementById('result').innerHTML = '';
+            document.getElementById('save-form').style.display = 'none';
+        }
+
+        function toggleMenu() {
+            var menu = document.getElementById('dropdown-menu');
+            menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+        }
+    </script>
+</body>
+<footer class="footer">
+    <p>&copy; 2024 Ваше приложение для распознавания показаний счетчиков. Все права защищены.</p>
+</footer>
+</html>

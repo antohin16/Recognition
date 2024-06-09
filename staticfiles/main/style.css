@@ -1,0 +1,605 @@
+body {
+    height: 100% ;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: white;
+    background-image: url(1.webp);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh; /* Минимальная высота, чтобы занимать весь экран */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+ body {
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+        }
+.container {
+    flex: 1;
+    max-width: 1200px; /* Увеличиваем ширину контейнера */
+    width: 100%;
+    padding: 20px;
+    margin-top: 30px;
+    background-color: white; /* Белый фон для контейнера */
+     /* Фиолетовая рамка */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    text-align: center; /* Центрирование текста внутри контейнера */
+    color: #333; /* Цвет текста внутри контейнера */
+    opacity: 0.95;
+}
+
+.wide-container {
+    max-width: 1000px; /* Увеличиваем максимальную ширину для широкого контейнера */
+}
+
+input[type="file"], button {
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    input[type="file"], button {
+        margin-top: 10px;
+    }
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    margin-top: 20px;
+}
+
+input[type="file"] {
+    margin: 20px 0;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 24px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+#result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #ddd; /* Светло-серый фон для результатов */
+    border-radius: 4px;
+    color: #333;
+}
+
+.continue-button {
+    display: block;
+    width: 75%;
+    padding: 20px;
+    cursor: pointer;
+    outline: none;
+    background-color: #ffffff;
+    transition: background-color 0.3s;
+}
+
+.continue-button:hover {
+    background-color: #dddddd; /* Серый цвет при наведении */
+}
+
+.continue-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+.continue-text:hover {
+    color: #555;
+}
+
+.reading-entry {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+
+.reading-entry img {
+    flex-shrink: 0;
+    margin-right: 20px;
+    width: 150px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.reading-entry .reading-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.reading-entry .reading-info p {
+    margin: 5px 0;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 24px; /* Изменяем padding для кнопок */
+    margin: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: #4CAF50;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.btn:hover {
+    background-color: #3e8e41;
+}
+
+.btn:active {
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.btn-export {
+    font-weight: bold;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between; /* Выравнивание кнопок по сторонам */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.export-buttons {
+    display: flex;
+    gap: 10px; /* Пробел между кнопками экспорта */
+}
+
+.button-container .btn {
+    margin-right: 0;
+}
+
+.button-container form {
+    display: inline;
+}
+
+.btn-export, .btn-delete-all {
+    padding: 10px 20px; /* Изменяем padding для кнопок */
+    font-size: 16px;
+    height: 25px; /* Устанавливаем одинаковую высоту */
+}
+
+.btn-delete-all {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    height: 35px;
+    margin-bottom: 30px;
+}
+
+.btn-delete-all:hover {
+    background-color: #c9302c;
+}
+
+.btn-pdf {
+    background-color: #f44336;
+}
+
+.btn-pdf:hover {
+    background-color: #da190b;
+}
+
+.btn-excel {
+    background-color: #4CAF50;
+}
+
+.btn-excel:hover {
+    background-color: #45a049;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Навигация */
+.navigation {
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0; /* В верхней части страницы */
+    left: 0; /* В левой части страницы */
+    background-color: #333; /* Цвет фона */
+    width: 100%; /* Ширина на всю ширину страницы */
+    z-index: 1000; /* Убедитесь, что навигация всегда сверху */
+    padding: 0; /* Добавляем padding */
+    display: flex; /* Используем flexbox для выравнивания */
+    justify-content: center; /* Центрируем ссылки */
+
+}
+
+.navigation a {
+    display: flex; /* Выстраиваем ссылки в ряд */
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    transition: background-color 0.3s; /* Плавный переход цвета фона */
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigation-links {
+    display: flex;
+    gap: 20px;
+}
+
+.menu-icon {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.menu-icon div {
+    width: 25px;
+    height: 3px;
+    background-color: #ffffff;
+    margin: 4px 0;
+}
+
+.dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+
+}
+
+.dropdown-menu a {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+}
+
+.dropdown-menu a:hover {
+    background-color: #f1f1f1;
+}
+
+@media (max-width: 1024px) {
+    .navigation-links {
+        display: none;
+    }
+
+    .menu-icon {
+        display: flex;
+    }
+
+    .dropdown-menu {
+        width: 100%;
+        left: 0;
+        right: 0;
+    }
+}
+.btn-delete-selected {
+    background-color: #45A049FF;
+    margin-top: 20px; /* Дополнительный отступ сверху для кнопки удаления выбранных */
+}
+
+.btn-delete-selected:hover {
+    background-color: #c9302c;
+}
+
+.faq {
+    width: 100%;
+    margin: 0 auto;
+}
+
+details {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5em;
+    margin-bottom: 1em;
+}
+
+summary {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+details[open] {
+    background-color: #eef;
+}
+ .footer {
+            background-color: #333;
+            width: 100%;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+.footer p {
+    margin: 0; /* Убираем отступы */
+}
+/* Стили для модального окна */
+/* Стили для модального окна */
+.modal {
+    display: none; /* Скрыть по умолчанию */
+    position: fixed; /* Оставаться на месте */
+    z-index: 1000; /* На вершине всех остальных элементов */
+    left: 0;
+    top: 0;
+    width: 100%; /* Полная ширина */
+    height: 100%; /* Полная высота */
+    overflow: auto; /* Включить прокрутку, если необходимо */
+    background-color: rgba(0, 0, 0, 0.5); /* Черный с прозрачностью */
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto; /* 15% сверху и по центру */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Может быть изменено для адаптивности */
+    text-align: center;
+}
+
+.modal-content p {
+    color: #000;
+}
+
+.modal-content button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.modal-content button:hover {
+    background-color: #45a049;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    margin: 300px;
+    background-color: #f5f5f5;
+    width: 45vh;
+}
+
+.login-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+.login-box label {
+    color: #3a4247;
+    font-size: 14px;
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+    color: black;
+
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.form-group label, .login-box p {
+    display: block;
+    margin-bottom: 5px;
+    color: #000000; /* p */
+    font-size: 14px;
+}
+
+.login-box input[type="text"],
+.login-box input[type="password"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.login-box button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-box button:hover {
+    background-color: #218838;
+}
+
+.register-link {
+    margin-top: 20px;
+}
+.register-link a {
+    color: #28a745;
+    text-decoration: none;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+.register-container {
+    display: flex;
+    justify-content: center;
+    margin:200px;
+    background-color: #f5f5f5;
+    width: 45vh;
+}
+
+.register-box {
+    background-color: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.register-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+}
+.register-box label {
+
+   color: #3a4247;
+    font-size: 14px;
+}
+
+.register-box form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-box form .form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.register-box form .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.register-box form input[type="text"],
+.register-box form input[type="password"],
+.register-box form input[type="email"] {
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.register-box form button {
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.register-box form button:hover {
+    background-color: #218838;
+}
+
+.form-text {
+    color: #6c757d;
+}
+.form-group label, .register-box p {
+    display: block;
+    margin-bottom: 5px;
+    color: #000000; /* p */
+    font-size: 14px;
+}
+.register- {
+    color: #28a745;
+    text-decoration: none;
+}
+
+.green-link:hover {
+    text-decoration: underline;
+}
+
+.login-link a {
+    color: #28a745;
+    text-decoration: none;
+}
+.login-link a:hover {
+    text-decoration: underline;
+}
+
+#placeholder {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.camera-icon {
+    width: 300px;
+    height: 300px;
+    margin-top: 50px;
+
+}
+
+#image-display img {
+    max-width: 100%;
+    height: auto;
+}
+
+.modal button {
+    background-color: #4CAF50; /* Зеленый */
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: center;
+}
+
+.modal button:hover {
+    opacity: 0.8;
+}
+.left-buttons {
+    display: flex;
+    gap: 10px; /* Расстояние между кнопками */
+}
