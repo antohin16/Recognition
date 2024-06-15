@@ -10,7 +10,6 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 import os
-from recognition.combined_image_recognition import process_image
 from django.utils.timezone import make_naive
 from openpyxl import Workbook
 from reportlab.lib.pagesizes import letter
@@ -18,40 +17,53 @@ from reportlab.pdfgen import canvas
 from django.views.decorators.http import require_POST
 from recognition.image_recognition import process_image
 from recognition.water_image_recognition import process_water_image
+import logging
 
 def index(request):
     return render(request, 'main/index.html')
 
+logger = logging.getLogger(__name__)
+
 def register(request):
     if request.method == 'POST':
+        logger.info('POST запрос на регистрацию')
         form = NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
+            logger.info('Форма регистрации валидна, пользователь создан: %s', user.username)
             login(request, user)
             messages.success(request, 'Регистрация прошла успешно.')
             return redirect('index')
         else:
+            logger.error('Ошибка при регистрации: %s', form.errors)
             messages.error(request, 'Ошибка при регистрации. Пожалуйста, попробуйте снова.')
     else:
+        logger.info('GET запрос на регистрацию')
         form = NewUserForm()
     return render(request, 'main/register.html', {'form': form})
 
 def login_request(request):
     if request.method == 'POST':
+        logger.info('POST запрос на вход')
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                logger.info('Пользователь аутентифицирован: %s', username)
                 login(request, user)
                 messages.info(request, f'Вы вошли как {username}.')
                 return redirect('index')
             else:
+                logger.error('Не удалось аутентифицировать пользователя: %s', username)
                 messages.error(request, 'Неверное имя пользователя или пароль.')
         else:
+            logger.error('Форма входа не валидна: %s', form.errors)
             messages.error(request, 'Неверное имя пользователя или пароль.')
-    form = AuthenticationForm()
+    else:
+        logger.info('GET запрос на вход')
+        form = AuthenticationForm()
     return render(request, 'main/login.html', {'form': form})
 
 

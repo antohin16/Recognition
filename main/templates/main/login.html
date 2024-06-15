@@ -30,5 +30,12 @@
             <p class="register-link">Нет аккаунта? <a href="{% url 'register' %}">Пройдите регистрацию</a></p>
         </div>
     </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 </html>

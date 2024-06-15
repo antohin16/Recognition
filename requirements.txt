@@ -50,3 +50,6 @@ tzdata==2024.1
 ultralytics==8.2.22
 urllib3==2.2.1
 whitenoise==6.6.0
+
+при старте гуникорна этой командой . ./bin/start_gunicorn.sh
+выкидывает из сервера

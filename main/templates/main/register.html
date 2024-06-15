@@ -23,6 +23,9 @@
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}">Введите логин:</label>
                 {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="error">{{ form.username.errors }}</div>
+                {% endif %}
                 {% if form.username.help_text %}
                     <small class="form-text text-muted">Обязательное поле, не более 150 символов. Буквы, цифры и @/./+/-/_ только.</small>
                 {% endif %}
@@ -30,14 +33,24 @@
             <div class="form-group">
                 <label for="{{ form.email.id_for_label }}">Введите адрес электронной почты:</label>
                 {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="error">{{ form.email.errors }}</div>
+                {% endif %}
             </div>
             <div class="form-group">
                 <label for="{{ form.password1.id_for_label }}">Введите пароль:</label>
                 {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <div class="error">{{ form.password1.errors }}</div>
+                {% endif %}
+                <small class="form-text text-muted">Пароль не может быть только численным и должен содержать не менее 8 символов.</small>
             </div>
             <div class="form-group">
                 <label for="{{ form.password2.id_for_label }}">Введите пароль повторно:</label>
                 {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <div class="error">{{ form.password2.errors }}</div>
+                {% endif %}
                 {% if form.password2.help_text %}
                     <small class="form-text text-muted">Введите тот же пароль, что и выше, для подтверждения.</small>
                 {% endif %}
@@ -47,5 +60,12 @@
         <p class="login-link">Уже есть аккаунт? <a href="{% url 'login' %}">Войдите</a></p>
     </div>
 </div>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </body>
 </html>
